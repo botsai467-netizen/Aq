@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ذاتی اے آئی اسسٹنٹ - سمارٹ لاگ ان سسٹم</title>
+    <!-- گوگل فونٹس -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- فونٹ اوسم آئیکنز -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #131b2e;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #1e293b;
+            --glow-color: rgba(99, 102, 241, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* لاگ ان اسکرین اسٹائل */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .login-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .login-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .social-btn.google i { color: #ea4335; }
+        .social-btn.facebook i { color: #1877f2; }
+        .social-btn.twitter i { color: #ffffff; }
+
+        .divider {
+            margin: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            position: relative;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* مین ایپ اسٹائل */
+        header {
+            background-color: var(--panel-bg);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header h1 i {
+            color: var(--accent-color);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lang-selector {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-color);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile span {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* چیٹ ایریا */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .message {
+            display: flex;
+            gap: 15px;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user { align-self: flex-start; }
+        .message.ai { align-self: flex-end; }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .user .avatar { background-color: #3b82f6; color: white; }
+        .ai .avatar { background-color: var(--accent-color); color: white; }
+
+        .content {
+            background-color: var(--panel-bg);
+            padding: 15px 20px;
+            border-radius: 12px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .user .content { background-color: #1e3a8a; border-color: #2563eb; }
+
+        .result-card {
+            margin-top: 10px;
+            background: rgba(11, 15, 25, 0.7);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-card.youtube i { color: #ff0000; font-size: 1.4rem; }
+        .result-card.facebook i { color: #1877f2; font-size: 1.4rem; }
+        .result-card.image i { color: #10b981; font-size: 1.4rem; }
+
+        /* ان پٹ بار */
+        .input-container {
+            background-color: var(--panel-bg);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-box {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 15px;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            padding: 5px;
+        }
+
+        .input-box button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .suggestion-chip {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            border-color: var(--accent-color);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- لاگ ان اسکرین -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-brain" style="color: #6366f1;"></i> زیڈ - اے آئی اسسٹنٹ</h2>
+            <p>شروع کرنے کے لیے اپنے اکاؤنٹ سے لاگ ان کریں</p>
+            
+            <button class="social-btn google" onclick="loginUser('گوگل یوزر')">
+                <i class="fa-brands fa-google"></i> گوگل کے ذریعے لاگ ان کریں
+            </button>
+            <button class="social-btn facebook" onclick="loginUser('فیس بک یوزر')">
+                <i class="fa-brands fa-facebook"></i> فیس بک کے ذریعے لاگ ان کریں
+            </button>
+            <button class="social-btn twitter" onclick="loginUser('ایکس (ٹوٹر) یوزر')">
+                <i class="fa-brands fa-x-twitter"></i> ایکس (X) کے ذریعے لاگ ان کریں
+            </button>
+
+            <div class="divider">یا ای میل کے ذریعے</div>
+
+            <div class="input-group">
+                <input type="email" id="emailInput" placeholder="اپنا ای میل درج کریں...">
+            </div>
+            <button class="submit-btn" onclick="loginWithEmail()">آگے بڑھیں</button>
+        </div>
+    </div>
+
+    <!-- مین ایپ ہیڈر -->
+    <header>
+        <h1><i class="fa-solid fa-sparkles"></i> زیڈ - اے آئی اسسٹنٹ</h1>
+        <div class="header-controls">
+            <!-- لینگویج سلیکٹر -->
+            <select class="lang-selector" id="langSelector" onchange="changeLanguage()">
+                <option value="ur">اردو (Urdu)</option>
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+            <div class="user-profile">
+                <i class="fa-solid fa-circle-user" style="color: var(--accent-color); font-size: 1.2rem;"></i>
+                <span id="userNameDisplay">یوزر</span>
+                <button class="logout-btn" onclick="logoutUser()" title="لاگ آؤٹ"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- چیٹ سیکشن -->
+    <div class="chat-container" id="chatContainer"></div>
+
+    <!-- کوئیک سجسشنز -->
+    <div class="suggestions">
+        <div class="suggestion-chip" onclick="sendPreset('فیس بک سے میری پسندیدہ ویڈیوز ڈھونڈ دو')">📱 فیس بک ویڈیو سرچ</div>
+        <div class="suggestion-chip" onclick="sendPreset('یوٹیوب سے بہترین لرننگ مٹیریل لا دو')">▶️ یوٹیوب سرچ</div>
+        <div class="suggestion-chip" onclick="sendPreset('ایک خوبصورت اور پرسکون قدرتی منظر کی تصویر بنا دو')">🎨 اے آئی امیج جنریشن</div>
+        <div class="suggestion-chip" onclick="sendPreset('آج کے دن کے لیے کوئی بہترین موٹیویشنل بات لکھ دو')">✍️ انسانی فطرت و سکون</div>
+    </div>
+
+    <!-- انپٹ سیکشن -->
+    <div class="input-container">
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="یہاں اپنا حکم یا خواہش درج کریں..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const loginScreen = document.getElementById('loginScreen');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+
+        function loginUser(name) {
+            userNameDisplay.innerText = name;
+            loginScreen.style.display = 'none';
+            appendMessage(`خوش آمدید، ${name}! میں آپ کا سمارٹ اور سیف اے آئی اسسٹنٹ ہوں۔ میں آپ کے قانونی دائرہ کار میں رہتے ہوئے، آپ کے اندازِ فکر کو سیکھ کر بہترین نتائج پیش کرتا ہوں۔ آج میں آپ کی کیا مدد کروں؟`, 'ai');
+        }
+
+        function loginWithEmail() {
+            const email = document.getElementById('emailInput').value.trim();
+            if(!email) {
+                alert('براہ کرم درست ای میل درج کریں!');
+                return;
+            }
+            const username = email.split('@')[0];
+            loginUser(username);
+        }
+
+        function logoutUser() {
+            loginScreen.style.display = 'flex';
+            chatContainer.innerHTML = '';
+        }
+
+        function changeLanguage() {
+            const selectedLang = document.getElementById('langSelector').value;
+            if(selectedLang === 'en') {
+                alert("Language switched to English (Interface can be adapted further).");
+            } else if(selectedLang === 'hi') {
+                alert("भाषा बदलकर हिंदी कर दी गई है।");
+            } else {
+                alert("زبان تبدیل کر کے اردو کر دی گئی ہے۔");
+            }
+        }
+
+        function sendPreset(text) {
+            userInput.value = text;
+            sendMessage();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // سیکیورٹی اور اللیگل چیک (بنیادی فلٹر)
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('hacked') || lowerText.includes('illegal') || lowerText.includes('چوری') || lowerText.includes('اللیگل')) {
+                appendMessage(text, 'user');
+                setTimeout(() => {
+                    appendMessage("معذرت! قانون اور سیکیورٹی گائیڈ لائنز کے تحت میں کسی بھی غیر قانونی (Illegal) یا سیکیورٹی کے خلاف سرگرمی میں مدد نہیں کر سکتا۔", 'ai');
+                }, 500);
+                userInput.value = '';
+                return;
+            }
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            setTimeout(() => {
+                generateAIResponse(text);
+            }, 800);
+        }
+
+        function appendMessage(text, sender, extraHTML = '') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerHTML = sender === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-brain"></i>';
+
+            const content = document.createElement('div');
+            content.className = 'content';
+            content.innerHTML = text + extraHTML;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatContainer.appendChild(messageDiv);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function generateAIResponse(query) {
+            let reply = "میں نے آپ کے پیٹرن اور سیکھنے کی صلاحیت (Adaptive Learning) کو مدنظر رکھتے ہوئے آپ کے لیے یہ محفوظ اور بہترین نتیجہ تیار کیا ہے۔";
+            let extra = "";
+
+            if (query.includes('فیس بک') || query.includes('Facebook')) {
+                reply = "آپ کے مفاد اور فیس بک ڈیٹا کے تجزیے (Analysis) کے مطابق، یہ ٹرینڈنگ اور مفید ویڈیو موجود ہے:";
+                extra = `
+                    <div class="result-card facebook">
+                        <i class="fa-brands fa-facebook"></i>
+                        <div>
+                            <strong>فیس بک رزلٹ (محفوظ اور قانونی):</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">معلوماتی اور آپ کے ذوق کے مطابق</span>
+                        </div>
+                    </div>
+                `;
+            } else if (query.includes('یوٹیوب') || query.includes('YouTube')) {
+                reply = "یوٹیوب پر آپ کے لرننگ سیشن کے لیے بہترین ویڈیوز کا انتخاب کر لیا گیا ہے:";
+                extra = `
+                    <div class="result-card youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                        <div>
+                            <strong>یوٹیوب رزلٹ:</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">آپ کی پسند اور روزانہ کی روٹین کے مطابق</span>
+                        </div>
+                    </div>
+                `;
+            } else if (query.includes('تصویر') || query.includes('image') || query.includes('منظر')) {
+                reply = "آپ کے مزاج کو سمجھتے ہوئے یہ خوبصورت اے آئی آرٹ جنریٹ کیا گیا ہے:";
+                extra = `
+                    <div class="result-card image">
+                        <i class="fa-solid fa-image"></i>
+                        <div>
+                            <strong>اے آئی جنریٹڈ آرٹ:</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">پرسکون کلر ٹೋನ್ اور ہائی ریزولوشن</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                reply = `آپ کی اس بات کا تجزیہ کر کے میں نے نیا اندازِ عمل سیکھ لیا ہے۔ بتائیں اس میں مزید کیا بہتری لانی ہے!`;
+            }
+
+            appendMessage(reply, 'ai', extra);
+        }
+    </script>
+</body>
+</html>
